@@ -1,0 +1,152 @@
+---
+import { ui, type Locale } from '../i18n/ui';
+import { getLocalizedPath, getAlternateLocale } from '../i18n/utils';
+
+interface Props {
+  locale: Locale;
+  alternateUrl?: string;
+}
+
+const { locale, alternateUrl } = Astro.props;
+const homePath = getLocalizedPath(locale, '/');
+const altLocale = getAlternateLocale(locale);
+const switchHref = alternateUrl ?? getLocalizedPath(altLocale, '/');
+const navText = ui[locale].nav;
+const isFr = locale === 'fr';
+
+const navLinks = [
+  { href: `${homePath}#about`, label: navText.about, code: '01' },
+  { href: `${homePath}#skills`, label: navText.skills, code: '02' },
+  { href: `${homePath}#projects`, label: navText.projects, code: '03' },
+  { href: `${homePath}#cv`, label: navText.cv, code: '04' },
+  { href: `${homePath}#contact`, label: navText.contact, code: '05' },
+];
+---
+
+<header class="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-[#07080f]/85 border-b border-[#00f0ff]/20">
+  <nav aria-label={isFr ? 'Navigation principale' : 'Primary navigation'} class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <!-- Brand -->
+    <a
+      href={homePath}
+      class="group inline-flex items-center gap-2.5 font-display text-sm sm:text-base font-bold tracking-wider text-white transition-colors hover:text-[#00f0ff]"
+    >
+      <span class="relative flex h-2.5 w-2.5">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00f0ff] opacity-75"></span>
+        <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#00f0ff] shadow-[0_0_10px_#00f0ff]"></span>
+      </span>
+      <span class="tracking-widest">
+        DEEFORSHI <span class="text-[#00f0ff]">//</span> HB
+      </span>
+    </a>
+
+    <!-- Desktop Navigation -->
+    <div class="hidden md:flex items-center gap-6">
+      <ul class="flex items-center gap-5">
+        {navLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="group inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-widest text-slate-300 transition-colors hover:text-[#00f0ff]"
+            >
+              <span class="text-[#00f0ff]/60 group-hover:text-[#ff2a85] transition-colors">{link.code}.</span>
+              <span>{link.label}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <!-- Language Switcher -->
+      <a
+        href={switchHref}
+        aria-label={isFr ? 'Switch to English' : 'Passer en français'}
+        class="clip-cyber-sm inline-flex items-center gap-1.5 border border-[#00f0ff]/40 bg-[#0d101d] px-3 py-1.5 font-mono text-xs font-semibold tracking-wider text-slate-300 transition-all hover:border-[#00f0ff] hover:text-white hover:shadow-[0_0_14px_rgba(0,240,255,0.3)]"
+      >
+        <svg class="h-3.5 w-3.5 text-[#00f0ff]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M2 12h20" />
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+        </svg>
+        <span class={locale === 'fr' ? 'text-[#00f0ff]' : 'text-slate-500'}>FR</span>
+        <span class="text-slate-600">/</span>
+        <span class={locale === 'en' ? 'text-[#00f0ff]' : 'text-slate-500'}>EN</span>
+      </a>
+    </div>
+
+    <!-- Mobile Controls -->
+    <div class="flex md:hidden items-center gap-2.5">
+      <a
+        href={switchHref}
+        aria-label={isFr ? 'Switch to English' : 'Passer en français'}
+        class="clip-cyber-sm inline-flex items-center gap-1 border border-[#00f0ff]/40 bg-[#0d101d] px-2.5 py-1 font-mono text-[11px] font-semibold tracking-wider text-slate-300"
+      >
+        <span class={locale === 'fr' ? 'text-[#00f0ff]' : 'text-slate-500'}>FR</span>
+        <span class="text-slate-600">/</span>
+        <span class={locale === 'en' ? 'text-[#00f0ff]' : 'text-slate-500'}>EN</span>
+      </a>
+
+      <button
+        id="mobile-menu-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="mobile-nav-drawer"
+        aria-label={isFr ? 'Ouvrir le menu' : 'Toggle navigation menu'}
+        class="clip-cyber-sm inline-flex items-center justify-center border border-[#00f0ff]/35 bg-[#0d101d] p-2 text-[#00f0ff] transition-colors hover:border-[#00f0ff] hover:bg-[#12172a]"
+      >
+        <svg id="menu-icon-open" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg id="menu-icon-close" class="hidden h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Dropdown -->
+  <div
+    id="mobile-nav-drawer"
+    class="hidden md:hidden border-t border-[#00f0ff]/20 bg-[#07080f]/95 backdrop-blur-lg"
+  >
+    <ul class="mx-auto max-w-6xl space-y-1 px-4 py-4">
+      {navLinks.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            class="mobile-nav-link flex items-center justify-between rounded-sm border border-transparent px-3 py-2.5 font-mono text-sm uppercase tracking-wider text-slate-200 transition-colors hover:border-[#00f0ff]/30 hover:bg-[#12172a]/70 hover:text-[#00f0ff]"
+          >
+            <span>
+              <span class="mr-2 text-[#00f0ff]/70">{link.code}.</span>
+              {link.label}
+            </span>
+            <span class="text-xs text-[#ff2a85]">&gt;_</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</header>
+
+<script>
+  const toggleBtn = document.getElementById('mobile-menu-toggle');
+  const drawer = document.getElementById('mobile-nav-drawer');
+  const openIcon = document.getElementById('menu-icon-open');
+  const closeIcon = document.getElementById('menu-icon-close');
+  const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+
+  function setMenuState(isOpen: boolean) {
+    if (!toggleBtn || !drawer || !openIcon || !closeIcon) return;
+    toggleBtn.setAttribute('aria-expanded', String(isOpen));
+    drawer.classList.toggle('hidden', !isOpen);
+    openIcon.classList.toggle('hidden', isOpen);
+    closeIcon.classList.toggle('hidden', !isOpen);
+  }
+
+  toggleBtn?.addEventListener('click', () => {
+    const isOpen = toggleBtn.getAttribute('aria-expanded') === 'true';
+    setMenuState(!isOpen);
+  });
+
+  mobileLinks.forEach((link) => {
+    link.addEventListener('click', () => setMenuState(false));
+  });
+</script>

@@ -1,0 +1,86 @@
+---
+import { ui, type Locale } from '../i18n/ui';
+import { siteConfig } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const footerText = ui[locale].footer;
+const isFr = locale === 'fr';
+const year = new Date().getFullYear();
+const emailHref = `mailto:${siteConfig.email}`;
+---
+
+<footer class="relative z-10 border-t border-[#00f0ff]/20 bg-[#07080f]/95">
+  <!-- Terminal Divider Bar -->
+  <div class="border-b border-slate-800/80 bg-[#0d101d]/70">
+    <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8 font-mono text-[11px] tracking-wider text-slate-400">
+      <span class="text-[#00f0ff]">SYS://EOF</span>
+      <span class="hidden sm:inline">{isFr ? 'STATUT : OPÉRATIONNEL // BORDEAUX' : 'STATUS: OPERATIONAL // BORDEAUX'}</span>
+      <span>© {year} {siteConfig.name} · {footerText.rights}</span>
+    </div>
+  </div>
+
+  <div class="mx-auto flex max-w-6xl flex-col sm:flex-row items-center justify-between gap-6 px-4 py-8 sm:px-6 lg:px-8">
+    <!-- Brand & Built With -->
+    <div class="text-center sm:text-left space-y-1">
+      <div class="font-display text-sm font-bold tracking-wider text-white">
+        {siteConfig.name} <span class="text-[#00f0ff]">//</span> <span class="font-mono text-[#ff2a85]">@{siteConfig.handle}</span>
+      </div>
+      <p class="font-mono text-xs text-slate-400">
+        {footerText.builtWith}
+      </p>
+    </div>
+
+    <!-- Social Links & Back to top -->
+    <div class="flex items-center gap-3">
+      <a
+        href={siteConfig.github}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="GitHub"
+        class="clip-cyber-sm inline-flex h-10 w-10 items-center justify-center border border-slate-700 bg-[#0d101d] text-slate-300 transition-all hover:border-[#00f0ff] hover:text-[#00f0ff] hover:shadow-[0_0_12px_rgba(0,240,255,0.3)]"
+      >
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.238 1.84 1.238 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.235-3.22-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.3 1.23A11.5 11.5 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.91 1.235 3.22 0 4.61-2.807 5.625-5.48 5.92.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 21.795 24 17.298 24 12c0-6.63-5.37-12-12-12z" />
+        </svg>
+      </a>
+
+      <a
+        href={siteConfig.linkedin}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="LinkedIn"
+        class="clip-cyber-sm inline-flex h-10 w-10 items-center justify-center border border-slate-700 bg-[#0d101d] text-slate-300 transition-all hover:border-[#00f0ff] hover:text-[#00f0ff] hover:shadow-[0_0_12px_rgba(0,240,255,0.3)]"
+      >
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+        </svg>
+      </a>
+
+      <a
+        href={emailHref}
+        aria-label={isFr ? 'E-mail' : 'Email'}
+        class="clip-cyber-sm inline-flex h-10 w-10 items-center justify-center border border-slate-700 bg-[#0d101d] text-slate-300 transition-all hover:border-[#ff2a85] hover:text-[#ff2a85] hover:shadow-[0_0_12px_rgba(255,42,133,0.3)]"
+      >
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <rect x="2" y="4" width="20" height="16" rx="2" />
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+        </svg>
+      </a>
+
+      <a
+        href="#top"
+        aria-label={footerText.backToTop}
+        class="clip-cyber-sm inline-flex items-center gap-1.5 border border-[#00f0ff]/40 bg-[#0d101d] px-3 py-2 font-mono text-xs font-semibold uppercase tracking-wider text-[#00f0ff] transition-all hover:border-[#00f0ff] hover:bg-[#00f0ff]/10"
+      >
+        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 19V5m-7 7l7-7 7 7" />
+        </svg>
+        <span>{footerText.backToTop}</span>
+      </a>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,246 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { ui, type Locale } from '../i18n/ui';
+import { getProjectPath } from '../i18n/utils';
+
+interface Props {
+  locale: Locale;
+  projects: CollectionEntry<'projects'>[];
+}
+
+const { locale, projects } = Astro.props;
+const t = ui[locale].projects;
+
+const categoryMap = new Map<string, string>();
+for (const project of projects) {
+  if (!categoryMap.has(project.data.category)) {
+    categoryMap.set(project.data.category, project.data.categoryLabel);
+  }
+}
+const categories = Array.from(categoryMap.entries()).map(([key, label]) => ({
+  key,
+  label,
+}));
+---
+
+<section id="projects" class="relative py-20 border-t border-[#00f0ff]/10">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <!-- Section Heading -->
+    <div class="mb-10 flex flex-col gap-2">
+      <span class="font-mono text-xs uppercase tracking-[0.22em] text-[#00f0ff]">
+        {t.tag}
+      </span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold tracking-tight text-white">
+        {t.title}
+      </h2>
+      <p class="max-w-2xl text-sm sm:text-base text-slate-400">
+        {t.subtitle}
+      </p>
+    </div>
+
+    <!-- Interactive Category Filter Bar -->
+    <div
+      class="mb-10 flex flex-wrap items-center gap-2.5"
+      role="group"
+      aria-label={t.title}
+    >
+      <button
+        type="button"
+        data-project-filter="all"
+        aria-pressed="true"
+        class="project-filter-btn clip-cyber-sm cursor-pointer border border-[#00f0ff] bg-[#00f0ff]/15 px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider text-[#00f0ff] shadow-[0_0_16px_rgba(0,240,255,0.28)] transition-all"
+      >
+        {t.allFilter} ({projects.length})
+      </button>
+
+      {categories.map((cat) => {
+        const count = projects.filter((p) => p.data.category === cat.key).length;
+        return (
+          <button
+            type="button"
+            data-project-filter={cat.key}
+            aria-pressed="false"
+            class="project-filter-btn clip-cyber-sm cursor-pointer border border-slate-700/90 bg-[#0d101d]/90 px-4 py-2 font-mono text-xs font-semibold uppercase tracking-wider text-slate-300 transition-all hover:border-[#00f0ff]/60 hover:text-[#00f0ff]"
+          >
+            {cat.label} ({count})
+          </button>
+        );
+      })}
+    </div>
+
+    <!-- 3-Column Cyberpunk Project Grid -->
+    <div id="projects-grid" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {projects.map((project) => {
+        const detailHref = getProjectPath(locale, project.data.slug);
+        const visibleStack = project.data.stack.slice(0, 4);
+        const extraStackCount = project.data.stack.length - visibleStack.length;
+
+        return (
+          <article
+            data-project-card
+            data-category={project.data.category}
+            class="group clip-cyber flex flex-col overflow-hidden border border-[#00f0ff]/25 bg-[#0d101d]/90 transition-all duration-300 hover:-translate-y-1 hover:border-[#00f0ff]/75 hover:shadow-[0_0_24px_rgba(0,240,255,0.16)]"
+          >
+            <!-- 16:9 Cover Image -->
+            <a href={detailHref} class="relative block aspect-video overflow-hidden bg-[#12172a]">
+              <img
+                src={project.data.image}
+                alt={project.data.title}
+                loading="lazy"
+                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div
+                aria-hidden="true"
+                class="absolute inset-0 bg-gradient-to-t from-[#0d101d] via-[#0d101d]/25 to-transparent opacity-85"
+              ></div>
+              <div
+                aria-hidden="true"
+                class="cyber-scanlines pointer-events-none absolute inset-0 opacity-25"
+              ></div>
+
+              {project.data.featured && (
+                <span class="clip-cyber-sm absolute top-3 right-3 inline-flex items-center gap-1.5 bg-[#fcee0a] px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-[#07080f] shadow-[0_0_12px_rgba(252,238,10,0.45)]">
+                  <span class="h-1.5 w-1.5 rounded-full bg-[#07080f]"></span>
+                  {t.featuredBadge}
+                </span>
+              )}
+            </a>
+
+            <!-- Card Body -->
+            <div class="flex flex-1 flex-col justify-between gap-4 p-5">
+              <div class="space-y-3">
+                <!-- Category Pill + Year -->
+                <div class="flex items-center justify-between gap-2 font-mono text-[11px]">
+                  <span class="clip-cyber-sm border border-[#ff2a85]/40 bg-[#ff2a85]/10 px-2.5 py-0.5 font-semibold uppercase tracking-wider text-[#ff2a85]">
+                    {project.data.categoryLabel}
+                  </span>
+                  <span class="text-slate-400">{project.data.year}</span>
+                </div>
+
+                <!-- Title -->
+                <h3 class="font-display text-lg font-bold leading-snug text-white transition-colors group-hover:text-[#00f0ff]">
+                  <a href={detailHref} class="focus:outline-none">
+                    {project.data.title}
+                  </a>
+                </h3>
+
+                <!-- Summary -->
+                <p class="line-clamp-3 text-sm leading-relaxed text-slate-300">
+                  {project.data.summary}
+                </p>
+              </div>
+
+              <div class="space-y-4">
+                <!-- Stack Tags -->
+                <div class="flex flex-wrap gap-1.5">
+                  {visibleStack.map((tech) => (
+                    <span class="border border-[#00f0ff]/20 bg-[#12172a] px-2 py-0.5 font-mono text-[11px] text-slate-300">
+                      {tech}
+                    </span>
+                  ))}
+                  {extraStackCount > 0 && (
+                    <span class="border border-[#00f0ff]/35 bg-[#00f0ff]/10 px-2 py-0.5 font-mono text-[11px] font-semibold text-[#00f0ff]">
+                      +{extraStackCount}
+                    </span>
+                  )}
+                </div>
+
+                <!-- Action Links -->
+                <div class="flex items-center justify-between gap-3 border-t border-slate-800/90 pt-3.5">
+                  <a
+                    href={detailHref}
+                    class="inline-flex items-center gap-1.5 font-mono text-xs font-bold uppercase tracking-wider text-[#00f0ff] transition-colors hover:text-[#33f3ff]"
+                  >
+                    <span>{t.viewDetails}</span>
+                    <svg
+                      class="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      aria-hidden="true"
+                    >
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6l6 6-6 6" />
+                    </svg>
+                  </a>
+
+                  {project.data.repoUrl && (
+                    <a
+                      href={project.data.repoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${t.viewRepo} — ${project.data.title}`}
+                      title={t.viewRepo}
+                      class="clip-cyber-sm inline-flex h-8 w-8 items-center justify-center border border-slate-700 bg-[#12172a] text-slate-300 transition-all hover:border-[#00f0ff] hover:text-[#00f0ff]"
+                    >
+                      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                        />
+                      </svg>
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<script>
+  const filterButtons = document.querySelectorAll<HTMLButtonElement>('[data-project-filter]');
+  const projectCards = document.querySelectorAll<HTMLElement>('[data-project-card]');
+
+  const activeClasses = [
+    'border-[#00f0ff]',
+    'bg-[#00f0ff]/15',
+    'text-[#00f0ff]',
+    'font-bold',
+    'shadow-[0_0_16px_rgba(0,240,255,0.28)]',
+  ];
+  const inactiveClasses = [
+    'border-slate-700/90',
+    'bg-[#0d101d]/90',
+    'text-slate-300',
+    'font-semibold',
+  ];
+
+  filterButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const selected = btn.dataset.projectFilter ?? 'all';
+
+      filterButtons.forEach((other) => {
+        const isActive = other === btn;
+        other.setAttribute('aria-pressed', String(isActive));
+        if (isActive) {
+          other.classList.remove(...inactiveClasses);
+          other.classList.add(...activeClasses);
+        } else {
+          other.classList.remove(...activeClasses);
+          other.classList.add(...inactiveClasses);
+        }
+      });
+
+      projectCards.forEach((card) => {
+        const match = selected === 'all' || card.dataset.category === selected;
+        if (match) {
+          card.classList.remove('hidden');
+          card.animate(
+            [
+              { opacity: 0, transform: 'translateY(8px)' },
+              { opacity: 1, transform: 'translateY(0)' },
+            ],
+            { duration: 220, easing: 'ease-out' }
+          );
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    });
+  });
+</script>

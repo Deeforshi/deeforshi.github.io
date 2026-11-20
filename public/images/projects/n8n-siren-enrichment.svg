@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="675" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#07080f"/>
+      <stop offset="50%" stop-color="#0d101d"/>
+      <stop offset="100%" stop-color="#090c17"/>
+    </linearGradient>
+    <radialGradient id="glowCyan" cx="25%" cy="35%" r="45%">
+      <stop offset="0%" stop-color="#00f0ff" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#00f0ff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowPink" cx="75%" cy="65%" r="45%">
+      <stop offset="0%" stop-color="#ff2a85" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#ff2a85" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#00f0ff" stroke-opacity="0.07" stroke-width="1"/>
+    </pattern>
+    <filter id="neonCyan" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="neonPink" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <rect width="1200" height="675" fill="url(#grid)"/>
+  <rect width="1200" height="675" fill="url(#glowCyan)"/>
+  <rect width="1200" height="675" fill="url(#glowPink)"/>
+
+  <!-- HUD Frame -->
+  <rect x="28" y="28" width="1144" height="619" stroke="#00f0ff" stroke-opacity="0.22" stroke-width="1.5"/>
+  <path d="M28 60 L28 28 L60 28" stroke="#00f0ff" stroke-width="3"/>
+  <path d="M1140 28 L1172 28 L1172 60" stroke="#ff2a85" stroke-width="3"/>
+  <path d="M28 615 L28 647 L60 647" stroke="#ff2a85" stroke-width="3"/>
+  <path d="M1140 647 L1172 647 L1172 615" stroke="#00f0ff" stroke-width="3"/>
+
+  <!-- Top HUD Bar -->
+  <text x="58" y="72" fill="#00f0ff" font-family="monospace" font-size="16" font-weight="700" letter-spacing="3">N8N // DOCKER WORKFLOW</text>
+  <text x="920" y="72" fill="#fcee0a" font-family="monospace" font-size="15" font-weight="700" letter-spacing="2">SIREN + LINKEDIN AI</text>
+  <line x1="56" y1="92" x2="1144" y2="92" stroke="#00f0ff" stroke-opacity="0.2"/>
+
+  <!-- Connectors -->
+  <path d="M 215 330 C 265 330, 265 330, 305 330" stroke="#00f0ff" stroke-width="2.5" stroke-dasharray="6 4"/>
+  <path d="M 465 330 C 510 330, 505 235, 550 235" stroke="#00f0ff" stroke-width="2.5"/>
+  <path d="M 465 330 C 510 330, 505 425, 550 425" stroke="#ff2a85" stroke-width="2.5"/>
+  <path d="M 730 235 C 775 235, 775 330, 815 330" stroke="#00f0ff" stroke-width="2.5"/>
+  <path d="M 730 425 C 775 425, 775 330, 815 330" stroke="#ff2a85" stroke-width="2.5"/>
+  <path d="M 995 330 C 1020 330, 1020 330, 1045 330" stroke="#fcee0a" stroke-width="2.5"/>
+  <!-- LLM Sub-node link -->
+  <path d="M 905 395 L 905 470" stroke="#9d4edd" stroke-width="2.5" stroke-dasharray="5 5"/>
+
+  <!-- Node 1: JS Normalize -->
+  <g transform="translate(65, 275)">
+    <rect width="150" height="110" rx="8" fill="#12172a" stroke="#00f0ff" stroke-width="2" filter="url(#neonCyan)"/>
+    <text x="75" y="42" text-anchor="middle" fill="#00f0ff" font-family="monospace" font-size="13" font-weight="700">JS CODE</text>
+    <text x="75" y="68" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="15" font-weight="600">Normalize</text>
+    <text x="75" y="90" text-anchor="middle" fill="#94a3b8" font-family="monospace" font-size="11">Regex Dept</text>
+  </g>
+
+  <!-- Node 2: Loop / Batch -->
+  <g transform="translate(305, 275)">
+    <rect width="160" height="110" rx="8" fill="#12172a" stroke="#00f0ff" stroke-width="2"/>
+    <text x="80" y="42" text-anchor="middle" fill="#fcee0a" font-family="monospace" font-size="13" font-weight="700">BATCH LOOP</text>
+    <text x="80" y="68" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="15" font-weight="600">Split Items</text>
+    <text x="80" y="90" text-anchor="middle" fill="#94a3b8" font-family="monospace" font-size="11">Company Queue</text>
+  </g>
+
+  <!-- Node 3A: Serper SIREN -->
+  <g transform="translate(550, 180)">
+    <rect width="180" height="110" rx="8" fill="#12172a" stroke="#00f0ff" stroke-width="2"/>
+    <text x="90" y="40" text-anchor="middle" fill="#00f0ff" font-family="monospace" font-size="12" font-weight="700">HTTP // SERPER</text>
+    <text x="90" y="66" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="15" font-weight="600">SIREN Search</text>
+    <text x="90" y="88" text-anchor="middle" fill="#94a3b8" font-family="monospace" font-size="11">data.gouv / pappers</text>
+  </g>
+
+  <!-- Node 3B: Serper LinkedIn -->
+  <g transform="translate(550, 370)">
+    <rect width="180" height="110" rx="8" fill="#12172a" stroke="#ff2a85" stroke-width="2"/>
+    <text x="90" y="40" text-anchor="middle" fill="#ff2a85" font-family="monospace" font-size="12" font-weight="700">HTTP // SERPER</text>
+    <text x="90" y="66" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="15" font-weight="600">LinkedIn Search</text>
+    <text x="90" y="88" text-anchor="middle" fill="#94a3b8" font-family="monospace" font-size="11">site:linkedin.com</text>
+  </g>
+
+  <!-- Node 4: AI Agent -->
+  <g transform="translate(815, 265)">
+    <rect width="180" height="130" rx="10" fill="#17122c" stroke="#ff2a85" stroke-width="2.5" filter="url(#neonPink)"/>
+    <text x="90" y="40" text-anchor="middle" fill="#ff2a85" font-family="monospace" font-size="13" font-weight="700">AI AGENT</text>
+    <text x="90" y="68" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="16" font-weight="700">Entity Verifier</text>
+    <text x="90" y="92" text-anchor="middle" fill="#00f0ff" font-family="monospace" font-size="11">Strict JSON Schema</text>
+    <text x="90" y="112" text-anchor="middle" fill="#94a3b8" font-family="monospace" font-size="10">Anti-Hallucination</text>
+  </g>
+
+  <!-- Sub-node: OpenRouter Qwen -->
+  <g transform="translate(825, 470)">
+    <rect width="160" height="84" rx="42" fill="#12172a" stroke="#9d4edd" stroke-width="2"/>
+    <text x="80" y="38" text-anchor="middle" fill="#c084fc" font-family="monospace" font-size="12" font-weight="700">OPENROUTER</text>
+    <text x="80" y="60" text-anchor="middle" fill="#ffffff" font-family="monospace" font-size="12">qwen3.6-flash</text>
+  </g>
+
+  <!-- Node 5: Output JSON -->
+  <g transform="translate(1045, 275)">
+    <rect width="95" height="110" rx="8" fill="#12172a" stroke="#fcee0a" stroke-width="2"/>
+    <text x="47" y="45" text-anchor="middle" fill="#fcee0a" font-family="monospace" font-size="13" font-weight="700">FILTER</text>
+    <text x="47" y="70" text-anchor="middle" fill="#ffffff" font-family="monospace" font-size="13">&amp; JSON</text>
+    <text x="47" y="92" text-anchor="middle" fill="#94a3b8" font-family="monospace" font-size="10">AGGREGATE</text>
+  </g>
+
+  <!-- Bottom Telemetry -->
+  <text x="58" y="618" fill="#64748b" font-family="monospace" font-size="13">SELF-HOSTED DOCKER // N8N + SERPER API + OPENROUTER LLM</text>
+  <text x="1030" y="618" fill="#00f0ff" font-family="monospace" font-size="13">STATUS: VERIFIED</text>
+</svg>

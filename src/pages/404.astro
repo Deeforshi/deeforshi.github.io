@@ -1,0 +1,53 @@
+---
+import { ui } from '../i18n/ui';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  locale="fr"
+  title="SIGNAL PERDU // SIGNAL LOST — 404 — Heddy Brun"
+  description={ui.fr.notFound.subtitle}
+  alternateUrl="/en/"
+>
+  <section class="relative flex min-h-[70vh] items-center justify-center py-20">
+    <div class="mx-auto max-w-2xl px-4 text-center sm:px-6">
+      <div class="clip-cyber relative border border-[#ff2a85]/45 bg-[#0d101d]/95 p-8 sm:p-12 shadow-[0_0_32px_rgba(255,42,133,0.16)]">
+        <span aria-hidden="true" class="pointer-events-none absolute top-2.5 left-2.5 h-4 w-4 border-t-2 border-l-2 border-[#00f0ff]"></span>
+        <span aria-hidden="true" class="pointer-events-none absolute top-2.5 right-2.5 h-4 w-4 border-t-2 border-r-2 border-[#ff2a85]"></span>
+        <span aria-hidden="true" class="pointer-events-none absolute bottom-2.5 left-2.5 h-4 w-4 border-b-2 border-l-2 border-[#ff2a85]"></span>
+        <span aria-hidden="true" class="pointer-events-none absolute bottom-2.5 right-2.5 h-4 w-4 border-b-2 border-r-2 border-[#00f0ff]"></span>
+
+        <p class="mb-4 font-mono text-xs font-bold uppercase tracking-[0.25em] text-[#fcee0a]">
+          [ERR.404 // ROUTE_NOT_FOUND]
+        </p>
+
+        <h1 class="hover-glitch font-display text-4xl sm:text-5xl font-black tracking-tight text-white text-glow-pink">
+          SIGNAL PERDU // SIGNAL LOST — 404
+        </h1>
+
+        <p class="mt-4 text-base text-slate-300">
+          {ui.fr.notFound.subtitle}
+        </p>
+        <p class="mt-1 font-mono text-xs text-slate-400">
+          {ui.en.notFound.subtitle}
+        </p>
+
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+          <a
+            href="/"
+            class="clip-cyber-sm inline-flex items-center gap-2 bg-[#00f0ff] px-5 py-3 font-mono text-xs font-bold uppercase tracking-wider text-[#07080f] shadow-[0_0_18px_rgba(0,240,255,0.35)] transition-all hover:bg-[#33f3ff]"
+          >
+            <span>FR // {ui.fr.notFound.backHome}</span>
+          </a>
+
+          <a
+            href="/en/"
+            class="clip-cyber-sm inline-flex items-center gap-2 border border-[#ff2a85] bg-[#ff2a85]/10 px-5 py-3 font-mono text-xs font-bold uppercase tracking-wider text-[#ff2a85] transition-all hover:bg-[#ff2a85] hover:text-white"
+          >
+            <span>EN // {ui.en.notFound.backHome}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

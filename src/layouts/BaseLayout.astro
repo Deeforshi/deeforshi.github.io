@@ -1,0 +1,80 @@
+---
+import type { Locale } from '../i18n/ui';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description?: string;
+  alternateUrl?: string;
+}
+
+const {
+  locale,
+  title,
+  description = locale === 'fr'
+    ? 'Portfolio de Heddy Brun (Deeforshi) — Data, IA, Automatisation & Développement.'
+    : 'Portfolio of Heddy Brun (Deeforshi) — Data, AI, Automation & Software Engineering.',
+  alternateUrl,
+} = Astro.props;
+
+const canonicalUrl = Astro.url ? Astro.url.href : undefined;
+const ogLocale = locale === 'fr' ? 'fr_FR' : 'en_US';
+---
+
+<!doctype html>
+<html lang={locale} class="scroll-smooth dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#07080f" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+    <meta property="og:image" content="/images/profile/face.png" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="/images/profile/face.png" />
+
+    <!-- Google Fonts: Orbitron, Space Grotesk, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="relative min-h-screen bg-[#07080f] text-slate-200 antialiased selection:bg-[#00f0ff]/25 selection:text-[#00f0ff] overflow-x-hidden">
+    <!-- Fixed ambient cyber background -->
+    <div aria-hidden="true" class="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+      <div class="bg-cyber-grid absolute inset-0 opacity-75"></div>
+      <div class="absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-[#00f0ff]/10 blur-[130px]"></div>
+      <div class="absolute top-1/3 -right-40 h-[540px] w-[540px] rounded-full bg-[#ff2a85]/10 blur-[140px]"></div>
+      <div class="absolute bottom-0 left-1/3 h-[420px] w-[420px] rounded-full bg-[#9d4edd]/10 blur-[130px]"></div>
+      <div class="cyber-scanlines absolute inset-0 opacity-20"></div>
+    </div>
+
+    <Navbar locale={locale} alternateUrl={alternateUrl} />
+
+    <main id="top" class="relative z-10 pt-16">
+      <slot />
+    </main>
+
+    <Footer locale={locale} />
+  </body>
+</html>

@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import type { Locale } from '../i18n/ui';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import AboutTimeline from '../components/AboutTimeline.astro';
+import Skills from '../components/Skills.astro';
+import ProjectsSection from '../components/ProjectsSection.astro';
+import CvSection from '../components/CvSection.astro';
+import ContactSection from '../components/ContactSection.astro';
+
+const locale: Locale = 'fr';
+const alternateUrl = '/en/';
+
+const projects = (
+  await getCollection('projects', ({ data }) => data.locale === locale)
+).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout
+  locale={locale}
+  title="Heddy Brun (Deeforshi) — Développeur Data, IA Agentique & Automatisation"
+  description="Portfolio de Heddy Brun (Deeforshi) : alternant Data & IA chez Prospilot, étudiant Mastère MAALSI au CESI Bordeaux, workflows n8n et développement full-stack."
+  alternateUrl={alternateUrl}
+>
+  <Hero locale={locale} />
+  <AboutTimeline locale={locale} />
+  <Skills locale={locale} />
+  <ProjectsSection locale={locale} projects={projects} />
+  <CvSection locale={locale} />
+  <ContactSection locale={locale} />
+</BaseLayout>

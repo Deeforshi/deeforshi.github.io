@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cyber-bg: #07080f;
+  --color-cyber-surface: #0d101d;
+  --color-cyber-panel: #12172a;
+  --color-cyber-cyan: #00f0ff;
+  --color-cyber-pink: #ff2a85;
+  --color-cyber-yellow: #fcee0a;
+  --color-cyber-purple: #9d4edd;
+
+  --font-display: 'Orbitron', sans-serif;
+  --font-sans: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+@layer base {
+  html {
+    background-color: var(--color-cyber-bg);
+    color: #e2e8f0;
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+  }
+
+  ::selection {
+    background-color: rgb(0 240 255 / 0.25);
+    color: #00f0ff;
+  }
+}
+
+/* Cyber grid background */
+.bg-cyber-grid {
+  background-color: var(--color-cyber-bg);
+  background-image:
+    linear-gradient(to right, rgb(0 240 255 / 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(0 240 255 / 0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Subtle CRT scanlines overlay */
+.cyber-scanlines {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgb(0 0 0 / 0.18) 3px,
+    rgb(0 0 0 / 0.18) 4px
+  );
+}
+
+/* Clipped cyberpunk corners */
+.clip-cyber {
+  clip-path: polygon(
+    0 12px,
+    12px 0,
+    100% 0,
+    100% calc(100% - 12px),
+    calc(100% - 12px) 100%,
+    0 100%
+  );
+}
+
+.clip-cyber-sm {
+  clip-path: polygon(
+    0 6px,
+    6px 0,
+    100% 0,
+    100% calc(100% - 6px),
+    calc(100% - 6px) 100%,
+    0 100%
+  );
+}
+
+/* Neon glow utilities */
+.glow-cyan {
+  box-shadow: 0 0 12px rgb(0 240 255 / 0.35), 0 0 28px rgb(0 240 255 / 0.12);
+}
+
+.glow-pink {
+  box-shadow: 0 0 12px rgb(255 42 133 / 0.35), 0 0 28px rgb(255 42 133 / 0.12);
+}
+
+.glow-yellow {
+  box-shadow: 0 0 12px rgb(252 238 10 / 0.35), 0 0 28px rgb(252 238 10 / 0.12);
+}
+
+.text-glow-cyan {
+  text-shadow: 0 0 10px rgb(0 240 255 / 0.65);
+}
+
+.text-glow-pink {
+  text-shadow: 0 0 10px rgb(255 42 133 / 0.65);
+}
+
+/* Glitch hover effect */
+@keyframes cyber-glitch {
+  0%, 100% {
+    transform: translate(0);
+    text-shadow: -1px 0 #00f0ff, 1px 0 #ff2a85;
+  }
+  20% {
+    transform: translate(-2px, 1px);
+    text-shadow: 2px 0 #00f0ff, -2px 0 #ff2a85;
+  }
+  40% {
+    transform: translate(2px, -1px);
+    text-shadow: -2px 0 #fcee0a, 2px 0 #00f0ff;
+  }
+  60% {
+    transform: translate(-1px, -1px);
+    text-shadow: 1px 0 #ff2a85, -1px 0 #00f0ff;
+  }
+  80% {
+    transform: translate(1px, 1px);
+    text-shadow: -1px 0 #00f0ff, 2px 0 #ff2a85;
+  }
+}
+
+.hover-glitch:hover {
+  animation: cyber-glitch 0.35s steps(2, end) infinite;
+}

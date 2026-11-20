@@ -1,0 +1,112 @@
+---
+import { ui, type Locale } from '../i18n/ui';
+import { siteConfig } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const isFr = locale === 'fr';
+const skillsText = ui[locale].skills;
+
+const accentStyles = {
+  cyan: {
+    border: 'border-[#00f0ff]/30 hover:border-[#00f0ff]/70',
+    title: 'text-[#00f0ff]',
+    dot: 'bg-[#00f0ff] shadow-[0_0_8px_#00f0ff]',
+    bar: 'bg-gradient-to-r from-[#00f0ff]/70 to-[#00f0ff]',
+    badge: 'border-[#00f0ff]/35 bg-[#00f0ff]/10 text-[#00f0ff]',
+    itemHover: 'hover:border-[#00f0ff]/45',
+  },
+  pink: {
+    border: 'border-[#ff2a85]/30 hover:border-[#ff2a85]/70',
+    title: 'text-[#ff2a85]',
+    dot: 'bg-[#ff2a85] shadow-[0_0_8px_#ff2a85]',
+    bar: 'bg-gradient-to-r from-[#ff2a85]/70 to-[#ff2a85]',
+    badge: 'border-[#ff2a85]/35 bg-[#ff2a85]/10 text-[#ff2a85]',
+    itemHover: 'hover:border-[#ff2a85]/45',
+  },
+  yellow: {
+    border: 'border-[#fcee0a]/30 hover:border-[#fcee0a]/70',
+    title: 'text-[#fcee0a]',
+    dot: 'bg-[#fcee0a] shadow-[0_0_8px_#fcee0a]',
+    bar: 'bg-gradient-to-r from-[#fcee0a]/70 to-[#fcee0a]',
+    badge: 'border-[#fcee0a]/35 bg-[#fcee0a]/10 text-[#fcee0a]',
+    itemHover: 'hover:border-[#fcee0a]/45',
+  },
+  purple: {
+    border: 'border-[#9d4edd]/30 hover:border-[#9d4edd]/70',
+    title: 'text-[#9d4edd]',
+    dot: 'bg-[#9d4edd] shadow-[0_0_8px_#9d4edd]',
+    bar: 'bg-gradient-to-r from-[#9d4edd]/70 to-[#9d4edd]',
+    badge: 'border-[#9d4edd]/35 bg-[#9d4edd]/10 text-[#9d4edd]',
+    itemHover: 'hover:border-[#9d4edd]/45',
+  },
+} as const;
+---
+
+<section id="skills" class="relative py-20 border-t border-[#00f0ff]/10">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <!-- Section Heading -->
+    <div class="mb-12 flex flex-col gap-2">
+      <span class="font-mono text-xs uppercase tracking-[0.22em] text-[#00f0ff]">
+        {skillsText.tag}
+      </span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold tracking-tight text-white">
+        {skillsText.title}
+      </h2>
+      <p class="max-w-2xl text-sm sm:text-base text-slate-400">
+        {skillsText.subtitle}
+      </p>
+    </div>
+
+    <!-- 2x2 HUD Panels -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {siteConfig.skillGroups.map((group, index) => {
+        const theme = accentStyles[group.accent];
+        const items = group.items[locale];
+        return (
+          <div class:list={['clip-cyber border bg-[#0d101d]/90 p-6 transition-all', theme.border]}>
+            <div class="mb-5 flex items-center justify-between border-b border-slate-800 pb-3">
+              <div class="flex items-center gap-2.5">
+                <span class:list={['border px-2 py-0.5 font-mono text-[11px] font-bold', theme.badge]}>
+                  MOD.0{index + 1}
+                </span>
+                <h3 class:list={['font-display text-lg font-bold tracking-wide', theme.title]}>
+                  {group.title[locale]}
+                </h3>
+              </div>
+              <span class="font-mono text-[11px] text-slate-500">
+                {items.length} {isFr ? 'MODULES' : 'MODULES'}
+              </span>
+            </div>
+
+            <ul class="space-y-3">
+              {items.map((skill, skillIdx) => (
+                <li class:list={['border border-slate-800/90 bg-[#12172a]/70 px-3.5 py-2.5 transition-colors', theme.itemHover]}>
+                  <div class="flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                      <span class:list={['h-2 w-2 shrink-0 rounded-full', theme.dot]}></span>
+                      <span class="font-sans text-sm font-medium text-slate-100 truncate">
+                        {skill}
+                      </span>
+                    </div>
+                    <span class="shrink-0 font-mono text-[10px] tracking-widest text-slate-500">
+                      0{skillIdx + 1}
+                    </span>
+                  </div>
+                  <!-- Segmented neon HUD bar -->
+                  <div aria-hidden="true" class="relative mt-2 h-1.5 w-full overflow-hidden bg-[#07080f]">
+                    <div class:list={['h-full w-full opacity-80', theme.bar]}></div>
+                    <div class="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(90deg,transparent,transparent_12px,rgba(7,8,15,0.7)_12px,rgba(7,8,15,0.7)_14px)]"></div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,252 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { ui, type Locale } from '../../../i18n/ui';
+import { getProjectPath } from '../../../i18n/utils';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('projects', ({ data }) => data.locale === 'en');
+  return entries.map((entry) => ({
+    params: { slug: entry.data.slug },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'projects'>;
+}
+
+const { entry } = Astro.props;
+const locale: Locale = 'en';
+const t = ui[locale].projects;
+const alternateUrl = getProjectPath('fr', entry.data.slug);
+const { Content } = await render(entry);
+---
+
+<BaseLayout
+  locale={locale}
+  title={`${entry.data.title} — Heddy Brun`}
+  description={entry.data.summary}
+  alternateUrl={alternateUrl}
+>
+  <article class="relative py-12 sm:py-16">
+    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-8">
+      <!-- Back Link -->
+      <div>
+        <a
+          href="/en/#projects"
+          class="clip-cyber-sm inline-flex items-center gap-2 border border-[#00f0ff]/35 bg-[#0d101d]/90 px-4 py-2 font-mono text-xs font-semibold uppercase tracking-wider text-[#00f0ff] transition-all hover:border-[#00f0ff] hover:bg-[#00f0ff]/10"
+        >
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 12H5m6-6-6 6 6 6" />
+          </svg>
+          <span>{t.backToProjects}</span>
+        </a>
+      </div>
+
+      <!-- Hero Cover -->
+      <div class="clip-cyber relative overflow-hidden border border-[#00f0ff]/35 bg-[#0d101d]">
+        <div class="relative aspect-video w-full overflow-hidden bg-[#12172a]">
+          <img
+            src={entry.data.image}
+            alt={entry.data.title}
+            class="h-full w-full object-cover"
+          />
+          <div
+            aria-hidden="true"
+            class="absolute inset-0 bg-gradient-to-t from-[#0d101d] via-[#0d101d]/30 to-transparent"
+          ></div>
+          <div
+            aria-hidden="true"
+            class="cyber-scanlines pointer-events-none absolute inset-0 opacity-25"
+          ></div>
+
+          {entry.data.featured && (
+            <span class="clip-cyber-sm absolute top-4 right-4 inline-flex items-center gap-1.5 bg-[#fcee0a] px-3 py-1 font-mono text-xs font-bold uppercase tracking-wider text-[#07080f] shadow-[0_0_12px_rgba(252,238,10,0.45)]">
+              {t.featuredBadge}
+            </span>
+          )}
+        </div>
+
+        <div class="space-y-5 p-6 sm:p-8">
+          <div class="flex flex-wrap items-center gap-3 font-mono text-xs">
+            <span class="clip-cyber-sm border border-[#ff2a85]/45 bg-[#ff2a85]/10 px-3 py-1 font-semibold uppercase tracking-wider text-[#ff2a85]">
+              {entry.data.categoryLabel}
+            </span>
+            <span class="clip-cyber-sm border border-slate-700 bg-[#12172a] px-3 py-1 text-slate-300">
+              {entry.data.year}
+            </span>
+          </div>
+
+          <h1 class="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+            {entry.data.title}
+          </h1>
+
+          <p class="text-base sm:text-lg leading-relaxed text-slate-300">
+            {entry.data.summary}
+          </p>
+
+          <!-- Action Buttons -->
+          {(entry.data.repoUrl || entry.data.docUrl) && (
+            <div class="flex flex-wrap gap-3 pt-2">
+              {entry.data.repoUrl && (
+                <a
+                  href={entry.data.repoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="clip-cyber-sm inline-flex items-center gap-2 bg-[#00f0ff] px-4 py-2.5 font-mono text-xs font-bold uppercase tracking-wider text-[#07080f] shadow-[0_0_16px_rgba(0,240,255,0.35)] transition-all hover:bg-[#33f3ff]"
+                >
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                    />
+                  </svg>
+                  <span>{t.viewRepo}</span>
+                </a>
+              )}
+
+              {entry.data.docUrl && (
+                <a
+                  href={entry.data.docUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="clip-cyber-sm inline-flex items-center gap-2 border border-[#ff2a85] bg-[#ff2a85]/10 px-4 py-2.5 font-mono text-xs font-bold uppercase tracking-wider text-[#ff2a85] transition-all hover:bg-[#ff2a85] hover:text-white"
+                >
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 2v6h6M16 13H8M16 17H8M10 9H8" />
+                  </svg>
+                  <span>PDF Report</span>
+                </a>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <!-- Stack & Highlights Grid -->
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-12">
+        <div class="clip-cyber border border-[#00f0ff]/25 bg-[#0d101d]/90 p-6 md:col-span-5">
+          <h2 class="mb-4 font-mono text-xs font-bold uppercase tracking-[0.2em] text-[#00f0ff]">
+            // {t.stackLabel}
+          </h2>
+          <div class="flex flex-wrap gap-2">
+            {entry.data.stack.map((tech) => (
+              <span class="clip-cyber-sm border border-[#00f0ff]/25 bg-[#12172a] px-3 py-1 font-mono text-xs text-slate-200">
+                {tech}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div class="clip-cyber border border-[#ff2a85]/25 bg-[#0d101d]/90 p-6 md:col-span-7">
+          <h2 class="mb-4 font-mono text-xs font-bold uppercase tracking-[0.2em] text-[#ff2a85]">
+            // {t.highlightsLabel}
+          </h2>
+          <ul class="space-y-2.5">
+            {entry.data.highlights.map((item) => (
+              <li class="flex items-start gap-2.5 text-sm text-slate-300">
+                <span class="mt-1.5 h-1.5 w-1.5 shrink-0 bg-[#fcee0a] shadow-[0_0_8px_#fcee0a]"></span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Markdown Body -->
+      <div class="clip-cyber border border-slate-800 bg-[#0d101d]/90 p-6 sm:p-8">
+        <div class="mb-6 border-b border-slate-800 pb-3 font-mono text-xs font-bold uppercase tracking-[0.2em] text-[#00f0ff]">
+          // {t.contextLabel}
+        </div>
+        <div class="cyber-prose">
+          <Content />
+        </div>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .cyber-prose :global(h1),
+  .cyber-prose :global(h2),
+  .cyber-prose :global(h3) {
+    font-family: var(--font-display);
+    color: #ffffff;
+    font-weight: 700;
+    margin-top: 1.75rem;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.01em;
+  }
+  .cyber-prose :global(h2) {
+    font-size: 1.375rem;
+    border-left: 3px solid #00f0ff;
+    padding-left: 0.75rem;
+  }
+  .cyber-prose :global(h3) {
+    font-size: 1.125rem;
+    color: #00f0ff;
+  }
+  .cyber-prose :global(p) {
+    color: #cbd5e1;
+    line-height: 1.75;
+    margin-bottom: 1rem;
+  }
+  .cyber-prose :global(ul),
+  .cyber-prose :global(ol) {
+    color: #cbd5e1;
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+  }
+  .cyber-prose :global(ul) {
+    list-style-type: disc;
+  }
+  .cyber-prose :global(ol) {
+    list-style-type: decimal;
+  }
+  .cyber-prose :global(li) {
+    margin-bottom: 0.45rem;
+    line-height: 1.65;
+  }
+  .cyber-prose :global(strong) {
+    color: #ffffff;
+    font-weight: 600;
+  }
+  .cyber-prose :global(a) {
+    color: #00f0ff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .cyber-prose :global(a:hover) {
+    color: #ff2a85;
+  }
+  .cyber-prose :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background-color: #12172a;
+    color: #00f0ff;
+    padding: 0.15rem 0.4rem;
+    border: 1px solid rgb(0 240 255 / 0.25);
+  }
+  .cyber-prose :global(pre) {
+    background-color: #07080f;
+    border: 1px solid rgb(0 240 255 / 0.25);
+    padding: 1rem;
+    overflow-x: auto;
+    margin-bottom: 1.25rem;
+  }
+  .cyber-prose :global(pre code) {
+    border: none;
+    background: transparent;
+    padding: 0;
+  }
+  .cyber-prose :global(blockquote) {
+    border-left: 3px solid #ff2a85;
+    background-color: rgb(255 42 133 / 0.06);
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.25rem;
+    color: #e2e8f0;
+  }
+</style>

@@ -1,1 +1,0 @@
-Le projet Odomo est l\'amélioration d\'une station météorologique, j\'ai pu implémenter l\'affichage de la pluviométrie , de la météo et aussi gérer son potager.
